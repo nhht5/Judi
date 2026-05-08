@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and balance information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "chips": { "type": "integer", "description": "Balance in chips" },
+        "referralCode": { "type": "string" },
+        "referredBy": { "type": "string", "description": "UID of the user who referred this user" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "chips", "referralCode"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Top-up or withdrawal requests.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "type": { "type": "string", "enum": ["topup", "withdraw"] },
+        "amount": { "type": "integer" },
+        "status": { "type": "string", "enum": ["pending", "completed", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "type", "amount", "status", "createdAt"]
+    },
+    "Spin": {
+      "title": "Spin",
+      "description": "Record of a slot spin.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "betAmount": { "type": "integer" },
+        "winAmount": { "type": "integer" },
+        "result": { "type": "array", "items": { "type": "integer" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "betAmount", "winAmount", "result", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Individual user profiles"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Financial requests"
+    },
+    "/spins/{spinId}": {
+      "schema": "Spin",
+      "description": "Spin history"
+    }
+  }
+}
